@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Line from "./components/Line";
 import Popup from "./components/Popup";
-
+const backendUrl = process.env.BACKEND_URL;
 export default function App() {
   const [solution, setSolution] = useState("");
   const [definition, setDefinition] = useState("");
@@ -101,7 +101,7 @@ export default function App() {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/gets/validate", {
+      const response = await fetch(backendUrl + "/gets/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ word }),
@@ -140,7 +140,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchWord = async () => {
-      const response = await fetch("http://localhost:5000/gets/items");
+      const response = await fetch(backendUrl + "/gets/items");
       const wordObj = await response.json();
       const answer = wordObj.word;
       const ansDef = wordObj.definition;
