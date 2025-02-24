@@ -1,0 +1,73 @@
+.tile {
+  width: 50px;
+  height: 50px;
+  border: 2px solid black;
+  border-radius: 3px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: bold;
+}
+.line {
+  display: flex;
+  gap: 5px;
+}
+
+.board {
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.correct {
+  background-color: #6aaa64;
+  color: white;
+}
+
+.misplaced {
+  background-color: #c9b458;
+  color: white;
+}
+
+.incorrect {
+  background-color: #787c7e;
+  color: white;
+}
+
+.title {
+  display: flex;
+  font-size: 50px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-inner {
+  position: relative;
+  padding: 32px;
+  width: 100%;
+  max-width: 640px;
+  background-color: white;
+}
+.popup-inner .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
