@@ -168,7 +168,9 @@ export default function App() {
               />
             );
           })}
-          <div>{definition && <h3>{currentDefinition}</h3>}</div>
+          <div>
+            {definition && <h3 className="def">{currentDefinition}</h3>}
+          </div>
         </div>
         <Popup trigger={victoryScreen} setTrigger={setVictoryScreen}>
           <h3>You Won!</h3>
