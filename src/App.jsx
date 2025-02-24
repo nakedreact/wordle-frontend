@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Line from "./components/Line";
 import Popup from "./components/Popup";
-const backendUrl = process.env.BACKEND_URL;
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+console.log("Backend URL:", backendUrl);
 export default function App() {
   const [solution, setSolution] = useState("");
   const [definition, setDefinition] = useState("");
