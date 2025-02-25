@@ -93,7 +93,7 @@
 
 .key {
   padding: 10px 15px;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: bold;
   border: none;
   background: #ccc;
@@ -107,5 +107,5 @@
 
 .special {
   background: #aaa;
-  width: 80px;
+  width: 50px;
 }
