@@ -72,26 +72,29 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    const handleType = (event) => {
+    const handleKeyPress = (key) => {
       if (gameOver) return;
 
-      if (event.key === "Backspace") {
-        setCurrentGuess((prevGuess) => prevGuess.slice(0, -1));
-        return;
-      }
+      setCurrentGuess((prevGuess) => {
+        if (key === "Backspace") {
+          return prevGuess.slice(0, -1);
+        }
 
-      if (event.key === "Enter") {
-        if (currentGuess.length !== 5) return;
-        validateWord(currentGuess);
-        return;
-      }
+        if (key === "Enter") {
+          if (prevGuess.length !== 5) return prevGuess;
+          validateWord(prevGuess);
+          return "";
+        }
 
-      if (currentGuess.length >= 5) return;
+        if (prevGuess.length >= 5) return prevGuess;
 
-      const isLetter = /^[a-z]$/.test(event.key);
-      if (isLetter) {
-        setCurrentGuess((prevGuess) => prevGuess + event.key);
-      }
+        const isLetter = /^[a-z]$/.test(key);
+        if (isLetter) {
+          return prevGuess + key;
+        }
+
+        return prevGuess;
+      });
     };
 
     window.addEventListener("keydown", handleType);
@@ -178,7 +181,7 @@ export default function App() {
             {definition && <h3 className="def">{currentDefinition}</h3>}
           </div>
           <div>
-            <Keyboard />
+            <Keyboard onKeyPress={handleKeyPress} />
           </div>
         </div>
         <Popup trigger={victoryScreen} setTrigger={setVictoryScreen}>
