@@ -4,14 +4,8 @@ import Line from "./components/Line";
 import Popup from "./components/Popup";
 import Keyboard from "./components/Keyboard";
 
-import React, { useEffect, useState } from "react";
-import Keyboard from "./components/Keyboard"; // Importing Keyboard component
-import Line from "./components/Line";
-import Popup from "./components/Popup";
-
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 console.log("Backend URL:", backendUrl);
-
 export default function App() {
   const [solution, setSolution] = useState("");
   const [definition, setDefinition] = useState("");
@@ -76,40 +70,54 @@ export default function App() {
     lost,
   ]);
 
-  // ✅ Move handleKeyPress outside of useEffect
-  const handleKeyPress = (key) => {
+  const handleKeyboard = (event) => {
     if (gameOver) return;
 
-    setCurrentGuess((prevGuess) => {
-      if (key === "Backspace") {
-        return prevGuess.slice(0, -1);
-      }
+    if (event.key === "Backspace") {
+      setCurrentGuess((prevGuess) => prevGuess.slice(0, -1));
+      return;
+    }
 
-      if (key === "Enter") {
-        if (prevGuess.length !== 5) return prevGuess;
-        validateWord(prevGuess);
-        return "";
-      }
+    if (event.key === "Enter") {
+      if (currentGuess.length !== 5) return;
+      validateWord(currentGuess);
+      return;
+    }
 
-      if (prevGuess.length >= 5) return prevGuess;
+    if (currentGuess.length >= 5) return;
 
-      const isLetter = /^[a-z]$/.test(key);
-      if (isLetter) {
-        return prevGuess + key;
-      }
-
-      return prevGuess;
-    });
+    const isLetter = /^[a-z]$/.test(event.key);
+    if (isLetter) {
+      setCurrentGuess((prevGuess) => prevGuess + event.key);
+    }
   };
 
   useEffect(() => {
     const handleType = (event) => {
-      handleKeyPress(event.key);
+      if (gameOver) return;
+
+      if (event.key === "Backspace") {
+        setCurrentGuess((prevGuess) => prevGuess.slice(0, -1));
+        return;
+      }
+
+      if (event.key === "Enter") {
+        if (currentGuess.length !== 5) return;
+        validateWord(currentGuess);
+        return;
+      }
+
+      if (currentGuess.length >= 5) return;
+
+      const isLetter = /^[a-z]$/.test(event.key);
+      if (isLetter) {
+        setCurrentGuess((prevGuess) => prevGuess + event.key);
+      }
     };
 
     window.addEventListener("keydown", handleType);
     return () => window.removeEventListener("keydown", handleType);
-  }, [gameOver]);
+  }, [currentGuess, gameOver, guesses]);
 
   const validateWord = async (word) => {
     if (guesses.includes(word)) {
@@ -134,8 +142,10 @@ export default function App() {
       setCurrentDefinition(result.definition);
 
       const newGuesses = [...guesses];
+
       newGuesses[guesses.findIndex((val) => val == null)] = word;
       setGuesses(newGuesses);
+
       setCurrentGuess("");
 
       if (
@@ -168,7 +178,6 @@ export default function App() {
 
     fetchWord();
   }, []);
-
   return (
     <>
       <div className="app">
@@ -190,8 +199,7 @@ export default function App() {
             {definition && <h3 className="def">{currentDefinition}</h3>}
           </div>
           <div>
-            <Keyboard onKeyPress={handleKeyPress} />{" "}
-            {/* ✅ Pass handleKeyPress */}
+            <Keyboard onClick={handleKeyboard} />
           </div>
         </div>
         <Popup trigger={victoryScreen} setTrigger={setVictoryScreen}>
