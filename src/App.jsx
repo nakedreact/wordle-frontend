@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Line from "./components/Line";
 import Popup from "./components/Popup";
-import Keyboard from "./components/Keyboard";
-
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 console.log("Backend URL:", backendUrl);
 export default function App() {
@@ -70,28 +68,6 @@ export default function App() {
     lost,
   ]);
 
-  const handleKeyboard = (event) => {
-    if (gameOver) return;
-
-    if (event.key === "Backspace") {
-      setCurrentGuess((prevGuess) => prevGuess.slice(0, -1));
-      return;
-    }
-
-    if (event.key === "Enter") {
-      if (currentGuess.length !== 5) return;
-      validateWord(currentGuess);
-      return;
-    }
-
-    if (currentGuess.length >= 5) return;
-
-    const isLetter = /^[a-z]$/.test(event.key);
-    if (isLetter) {
-      setCurrentGuess((prevGuess) => prevGuess + event.key);
-    }
-  };
-
   useEffect(() => {
     const handleType = (event) => {
       if (gameOver) return;
@@ -116,11 +92,7 @@ export default function App() {
     };
 
     window.addEventListener("keydown", handleType);
-    window.addEventListener("click", handleType);
-    return () => {
-      window.removeEventListener("click", handleType);
-      window.removeEventListener("keydown", handleType);
-    };
+    return () => window.removeEventListener("keydown", handleType);
   }, [currentGuess, gameOver, guesses]);
 
   const validateWord = async (word) => {
@@ -201,12 +173,6 @@ export default function App() {
           })}
           <div>
             {definition && <h3 className="def">{currentDefinition}</h3>}
-          </div>
-          <div>
-            <Keyboard onClick={handleType} />
-          </div>
-          <div>
-            <Keyboard onClick={handleKeyboard} />
           </div>
         </div>
         <Popup trigger={victoryScreen} setTrigger={setVictoryScreen}>
