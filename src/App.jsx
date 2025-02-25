@@ -127,7 +127,10 @@ export default function App() {
 
       setCurrentGuess("");
 
-      if (guesses.slice(0, -1).every((val) => val !== null)) {
+      if (
+        guesses.slice(0, -1).every((val) => val !== null) &&
+        word !== solution
+      ) {
         setGameOver(true);
         setLost(true);
       }
