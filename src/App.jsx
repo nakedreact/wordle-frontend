@@ -116,7 +116,11 @@ export default function App() {
     };
 
     window.addEventListener("keydown", handleType);
-    return () => window.removeEventListener("keydown", handleType);
+    window.addEventListener("click", handleType);
+    return () => {
+      window.removeEventListener("click", handleType);
+      window.removeEventListener("keydown", handleType);
+    };
   }, [currentGuess, gameOver, guesses]);
 
   const validateWord = async (word) => {
@@ -197,6 +201,9 @@ export default function App() {
           })}
           <div>
             {definition && <h3 className="def">{currentDefinition}</h3>}
+          </div>
+          <div>
+            <Keyboard onClick={handleType} />
           </div>
           <div>
             <Keyboard onClick={handleKeyboard} />
